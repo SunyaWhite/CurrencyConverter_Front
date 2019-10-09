@@ -1,0 +1,38 @@
+
+<div class="container">
+  <div class = "row">
+      <button type="button" class="btn btn-outline-secondary mr-2" placement="right"
+          ngbPopover="Which currency would you like to convert" popoverTitle="Source currency">
+        Source currency
+      </button>
+      <select [(ngModel)] = "sourceCurrency">
+          <option *ngFor="let cur of CurrenciesCodes()" value = "{{cur}}"> {{cur}} </option>
+      </select>
+  </div>
+
+  <div class = "row">
+      <button type="button" class="btn btn-outline-secondary mr-2" placement="right"
+          ngbPopover="Which currency would you like to convert to" popoverTitle="Converted currency">
+        Converted currency
+      </button>
+      <select [(ngModel)] = "computedCurrency">
+         <option *ngFor="let cur of CurrenciesCodes()" value = "{{cur}}"> {{cur}} </option>
+      </select>
+  </div>
+
+  <div class = "row">
+      <button type="button" class="btn btn-outline-secondary mr-2" placement="right"
+            ngbPopover="How much would you like to convert" popoverTitle="How much to convert">
+        How much to convert
+       </button>
+      <input type="number" min="0" [(ngModel)] = "sourceAmount" placeholder="Amount1">
+  </div>
+
+  <div  class="row" *ngIf="sourceAmount">
+      <h2> {{sourceAmount}} in {{sourceCurrency}} is {{ComputeAmount()}} in {{computedCurrency}} </h2>
+  </div>
+
+  <div class="row">
+    <button (click)="Reload()"> Reload data </button>
+  </div>
+</div>
