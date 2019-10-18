@@ -1,0 +1,8 @@
+.reload-button {
+    background-color: white;
+    color: red;
+    border: 1px;
+    border-style: solid;
+    border-radius: 1px;
+    border-color: grey;
+}

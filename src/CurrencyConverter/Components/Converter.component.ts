@@ -4,18 +4,21 @@ import { CurrencyRates } from "../Models/CurrencyRates.model";
 import { Router } from "@angular/router";
 import { FormControl, FormGroup } from "@angular/forms";
 import {CurrenciesService} from '../Services/CurrenciesService';
+import {CurrencyRequest} from "../Models/CurrencyRequest";
 
 @Component({
     selector : "app-converter",
-    templateUrl : "./Converter.component.html"
+    templateUrl : "./Converter.component.html",
+    styleUrls : ["./Converter.Component.css"]
 })
 
 export class ConverterComponent implements OnInit {
 
-    private service: CurrenciesService;
-    private sourceCurrency = "RUB";
-    private computedCurrency ="EUR";
-    private sourceAmount = 0;
+    service: CurrenciesService;
+    sourceCurrency = "RUB";
+    computedCurrency ="EUR";
+    currentBankCode = "ECB";
+    sourceAmount = 0;
 
     public Currencies: Currency[] = [
       new Currency ('RUB', 73.61),
@@ -23,12 +26,19 @@ export class ConverterComponent implements OnInit {
       new Currency ('EUR', 1)
     ];
 
+    public BankCodes : string [] = 
+    [
+      "ECB",
+      "RCB"
+    ]
+
     constructor(service: CurrenciesService){
       this.service = service;
     }
 
     private async Reload() {
-      const res = await this.service.GetCurrencies().then(rates => rates.currencies);
+      var body = new CurrencyRequest(this.currentBankCode, new Date());
+      const res = await this.service.GetCurrencies(body).then(rates => rates.currencies);
       if (res != null) {
         this.Currencies = res;
       }
@@ -53,7 +63,7 @@ export class ConverterComponent implements OnInit {
           return null;
         }
         else {
-          return (this.sourceAmount / this.GetCurrencyRate(this.sourceCurrency)) * this.GetCurrencyRate(this.computedCurrency);
+          return Number(((this.sourceAmount / this.GetCurrencyRate(this.sourceCurrency)) * this.GetCurrencyRate(this.computedCurrency)).toFixed(2));
         }
     }
 }
